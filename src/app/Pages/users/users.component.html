@@ -1,18 +1,15 @@
 <div class="container">
   <div style="padding-top: 8rem">
-    <!-- <mat-form-field> -->
-      
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        type="text"
-        placeholder="Enter Search Term..."
-        #input
-        
-      />
-    <!-- </mat-form-field> -->
-
-    <div class="example-container ">
+    <!-- Filter bar -->
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      type="text"
+      placeholder="Enter Search Term..."
+      #input
+    />
+    <!-- table -->
+    <div class="example-container">
       <table mat-table [dataSource]="dataSource" matSort>
         <!-- ID Column -->
         <ng-container matColumnDef="id">
@@ -22,7 +19,9 @@
 
         <!-- Avatar Column -->
         <ng-container matColumnDef="avatar">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Avatar</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Avatar</b>
+          </th>
           <!-- <td mat-cell *matCellDef="let row">{{ row.avatar }}</td> -->
           <td mat-cell *matCellDef="let row">
             <img
@@ -36,19 +35,25 @@
 
         <!-- Firstname Column -->
         <ng-container matColumnDef="firstname">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Firstname</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Firstname</b>
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.first_name }}</td>
         </ng-container>
 
         <!-- Lastname Column -->
         <ng-container matColumnDef="lastname">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Lastname</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Lastname</b>
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.last_name }}</td>
         </ng-container>
 
         <!-- Email Column -->
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Email Address</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Email Address</b>
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.email }}</td>
         </ng-container>
 
@@ -70,13 +75,17 @@
 
         <!-- Status Column -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Status</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Status</b>
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.subscription.status }}</td>
         </ng-container>
 
         <!-- Country Column -->
         <ng-container matColumnDef="country">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Country</b></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <b>Country</b>
+          </th>
           <td mat-cell *matCellDef="let row">{{ row.address.country }}</td>
         </ng-container>
 

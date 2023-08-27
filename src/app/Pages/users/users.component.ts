@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from 'src/app/Services/user-service.service';
 import { CoreService } from 'src/app/core/core.service';
-
-
 
 export interface UserData {
   id: string;
@@ -35,7 +33,6 @@ export class UsersComponent implements OnInit {
     'plan',
     'status',
     'country',
-  
   ];
 
   dataSource!: MatTableDataSource<UserData>;
@@ -49,38 +46,15 @@ export class UsersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getEmployees();
+    this.getUsers();
   }
-
-  getEmployees() {
-    return this.apiService.getEmployees().subscribe({
+  getUsers() {
+    return this.apiService.getUsers().subscribe({
       next: (response) => {
         console.log(response);
         this.dataSource = new MatTableDataSource(response);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-      },
-      error: console.log,
-    });
-  }
-
-  // updateEmployee(data: any) {
-  //   const dialogRef = this._dialog.open(AddEmployeeDialogComponent, { data });
-  //   dialogRef.afterClosed().subscribe({
-  //     next: (val) => {
-  //       if (val) {
-  //         this.getEmployees();
-  //       }
-  //     },
-  //   });
-  // }
-
-  deleteEmployee(id: number) {
-    return this.apiService.deleteEmployee(id).subscribe({
-      next: (response) => {
-        // alert('Employee deleted!');
-        this.coreService.openSnackBar('Employee deleted!', 'Done');
-        return this.getEmployees();
       },
       error: console.log,
     });
