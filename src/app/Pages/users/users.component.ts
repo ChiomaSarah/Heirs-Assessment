@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/Services/user-service.service';
 import { CoreService } from 'src/app/core/core.service';
 
 
+
 export interface UserData {
   id: string;
   avatar: string;

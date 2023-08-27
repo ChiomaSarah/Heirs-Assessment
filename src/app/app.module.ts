@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HomePageComponent } from './Pages/home-page/home-page.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

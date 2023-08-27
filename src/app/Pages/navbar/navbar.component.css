@@ -1,3 +1,11 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
+mat-toolbar a {
+    text-decoration: none;
+    color: beige;
+    font-family: 'Play', sans-serif;
+}
+mat-toolbar {
+  display:flex;
+  position: fixed;
+  justify-content: space-between;
+  top: 0;
+}
