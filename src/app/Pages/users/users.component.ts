@@ -40,6 +40,7 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  isLoading: boolean = true;
   constructor(
     private apiService: ApiService,
     private coreService: CoreService
@@ -55,8 +56,11 @@ export class UsersComponent implements OnInit {
         this.dataSource = new MatTableDataSource(response);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.isLoading = false;
       },
-      error: console.log,
+      error(error: any) {
+        console.log(error);
+      },
     });
   }
 

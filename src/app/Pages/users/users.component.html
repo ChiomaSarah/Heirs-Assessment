@@ -1,5 +1,10 @@
 <div class="container">
   <div style="padding-top: 8rem">
+    <!-- Display spinner while data is being fetched -->
+    <div *ngIf="isLoading">
+      <app-loader />
+    </div>
+
     <!-- Filter bar -->
     <input
       matInput
@@ -8,9 +13,10 @@
       placeholder="Enter Search Term..."
       #input
     />
+
     <!-- table -->
     <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table mat-table [dataSource]="dataSource" matSort *ngIf="!isLoading">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header><b>ID</b></th>
