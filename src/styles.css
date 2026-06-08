@@ -1,10 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; 
-   
-        background: #Fe0000;
-       
-        width: 100%;
-        
-      }
-body { margin: 0; font-family: "Play", sans-serif;; }
+html,
+body {
+  height: 100%;
+
+  background: #Fe0000;
+
+  width: 100%;
+
+}
+
+body {
+  margin: 0;
+  font-family: "Play", sans-serif;
+  ;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.status-inactive {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+.status-pending {
+  background-color: #ff9800;
+  color: white;
+}
+
+.status-suspended {
+  background-color: #f44336;
+  color: white;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}

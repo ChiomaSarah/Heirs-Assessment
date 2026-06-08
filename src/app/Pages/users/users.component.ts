@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,7 +13,7 @@ export interface UserData {
   email: string;
   social_insurance_number: string;
   plan: string;
-  status: Date;
+  status: string;
   country: string;
 }
 
@@ -22,7 +22,7 @@ export interface UserData {
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'id',
     'avatar',
@@ -35,37 +35,89 @@ export class UsersComponent implements OnInit {
     'country',
   ];
 
-  dataSource!: MatTableDataSource<UserData>;
+  dataSource = new MatTableDataSource<UserData>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  isLoading: boolean = true;
+  isLoading = true;
+
   constructor(
     private apiService: ApiService,
     private coreService: CoreService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUsers();
   }
-  getUsers() {
-    return this.apiService.getUsers().subscribe({
-      next: (response) => {
-        console.log(response);
-        this.dataSource = new MatTableDataSource(response);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+
+    (this.dataSource as any).paginator = this.paginator;
+  }
+
+  getUsers(): void {
+    this.isLoading = true;
+
+    this.apiService.getUsers().subscribe({
+      next: (response: any) => {
+        console.log('API Response:', response);
+
+        const transformedUsers = response.results.map((user: any) => ({
+          id: user.login.uuid.substring(0, 8),
+          avatar: user.picture.medium,
+          firstname: user.name.first,
+          lastname: user.name.last,
+          email: user.email,
+          social_insurance_number: user.id?.value || 'N/A',
+          plan: this.getRandomPlan(),
+          status: this.getRandomStatus(),
+          country: user.location.country,
+        }));
+
+        this.dataSource.data = transformedUsers;
+
         this.isLoading = false;
+
+        this.coreService.openSnackBar(
+          'Users loaded successfully!',
+          'OK'
+        );
       },
-      error(error: any) {
-        console.log(error);
+      error: (error: any) => {
+        console.error('Error loading users:', error);
+        this.isLoading = false;
       },
     });
   }
 
-  applyFilter(event: Event) {
+  private getRandomPlan(): string {
+    const plans = [
+      'Basic',
+      'Premium',
+      'Enterprise',
+      'Professional',
+      'Starter',
+    ];
+
+    return plans[Math.floor(Math.random() * plans.length)];
+  }
+
+  private getRandomStatus(): string {
+    const statuses = [
+      'Active',
+      'Inactive',
+      'Pending',
+      'Suspended',
+    ];
+
+    return statuses[Math.floor(Math.random() * statuses.length)];
+  }
+
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
