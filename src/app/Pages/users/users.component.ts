@@ -41,6 +41,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   isLoading = true;
+  filterValue = '';
 
   constructor(
     private apiService: ApiService,
@@ -53,8 +54,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
-
-    (this.dataSource as any).paginator = this.paginator;
+    this.dataSource.paginator = this.paginator as any;
   }
 
   getUsers(): void {
@@ -64,7 +64,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
       next: (response: any) => {
         console.log('API Response:', response);
 
-        const transformedUsers = response.results.map((user: any) => ({
+        const users = response.results.map((user: any) => ({
           id: user.login.uuid.substring(0, 8),
           avatar: user.picture.medium,
           firstname: user.name.first,
@@ -76,8 +76,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
           country: user.location.country,
         }));
 
-        this.dataSource.data = transformedUsers;
-
+        this.dataSource.data = users;
         this.isLoading = false;
 
         this.coreService.openSnackBar(
@@ -94,31 +93,24 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   private getRandomPlan(): string {
     const plans = [
-      'Basic',
+      'Essential',
       'Premium',
-      'Enterprise',
-      'Professional',
-      'Starter',
+      'Elite',
+      'Platinum',
+      'Family',
     ];
-
     return plans[Math.floor(Math.random() * plans.length)];
   }
 
   private getRandomStatus(): string {
-    const statuses = [
-      'Active',
-      'Inactive',
-      'Pending',
-      'Suspended',
-    ];
-
+    const statuses = ['Active', 'Inactive', 'Pending', 'Suspended'];
     return statuses[Math.floor(Math.random() * statuses.length)];
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = (event.target as HTMLInputElement).value;
 
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
